@@ -15,16 +15,18 @@ npm install
 
 ## Scripts disponíveis
 
-| Comando | Descrição |
-| --- | --- |
-| `npm start` | Inicia o servidor de desenvolvimento em `http://localhost:4200/` |
-| `npm run build` | Gera o build de produção em `dist/` |
-| `npm run watch` | Build em modo desenvolvimento com observação de arquivos |
-| `npm test` | Executa os testes unitários com Vitest |
+| Comando         | Descrição                                                        |
+| --------------- | ---------------------------------------------------------------- |
+| `npm start`     | Inicia o servidor de desenvolvimento em `http://localhost:4200/` |
+| `npm run build` | Gera o build de produção em `dist/`                              |
+| `npm run watch` | Build em modo desenvolvimento com observação de arquivos         |
+| `npm test`      | Executa os testes unitários com Vitest                           |
 
 A aplicação recarrega automaticamente sempre que algum arquivo-fonte é modificado.
 
 ## Estrutura do projeto
+
+Cada feature (layout/_ e pages/_) segue a mesma arquitetura em camadas: `apis/`, `components/`, `containers/`, `facades/`, `mappers/`, `models/` e `stores/` (actions, effects, reducer, selectors).
 
 ```
 wetrega/
@@ -32,23 +34,47 @@ wetrega/
 │   └── favicon.ico
 ├── src/
 │   ├── app/
-│   │   ├── app.config.ts        # Configuração da aplicação (providers)
-│   │   ├── app.routes.ts        # Definição de rotas
-│   │   ├── app.ts               # Componente raiz
-│   │   ├── app.html             # Template do componente raiz
-│   │   ├── app.css              # Estilos do componente raiz
-│   │   └── app.spec.ts          # Testes do componente raiz
-│   ├── index.html               # HTML principal
-│   ├── main.ts                  # Bootstrap da aplicação
-│   └── styles.css               # Estilos globais (Tailwind)
-├── angular.json                 # Configuração do Angular CLI
-├── package.json                 # Dependências e scripts
-├── tsconfig.json                # Configuração TypeScript base
-├── tsconfig.app.json            # Configuração TypeScript da aplicação
-├── tsconfig.spec.json           # Configuração TypeScript dos testes
-├── .postcssrc.json              # Configuração do PostCSS
-├── .prettierrc                  # Configuração do Prettier
-├── .editorconfig                # Padrões de editor
+│   │   ├── app.config.ts                # Providers da aplicação
+│   │   ├── app.routes.ts                # Definição de rotas
+│   │   ├── app.ts / app.html / app.css  # Componente raiz
+│   │   ├── app.spec.ts                  # Testes do componente raiz
+│   │   │
+│   │   ├── layout/                      # Componentes estruturais
+│   │   │   ├── header/
+│   │   │   │   ├── apis/        → explore.api.ts
+│   │   │   │   ├── components/  → explore.component.{ts,html}
+│   │   │   │   ├── containers/  → explore.container.component.{ts,html}
+│   │   │   │   ├── facades/     → explore.facade.ts
+│   │   │   │   ├── mappers/     → explore.mapper.ts
+│   │   │   │   ├── models/      → explore.model.ts
+│   │   │   │   └── stores/      → explore.{actions,effects,reducer,selectors}.ts
+│   │   │   ├── footer/                  # (mesma estrutura)
+│   │   │   └── navigation/              # (mesma estrutura)
+│   │   │
+│   │   ├── pages/                       # Páginas/rotas da aplicação
+│   │   │   ├── home/                    # (mesma estrutura de feature)
+│   │   │   ├── explore/                 # (mesma estrutura de feature)
+│   │   │   ├── orders/                  # (mesma estrutura de feature)
+│   │   │   └── profile/                 # (mesma estrutura de feature)
+│   │   │
+│   │   └── services/                    # Serviços compartilhados
+│   │       ├── api/api.service.ts
+│   │       ├── modal/modal.service.ts
+│   │       └── toast/toast.service.ts
+│   │
+│   ├── index.html                       # HTML principal
+│   ├── main.ts                          # Bootstrap da aplicação
+│   └── styles.css                       # Estilos globais (Tailwind)
+│
+├── .vscode/                             # Configurações do VS Code
+├── angular.json                         # Configuração do Angular CLI
+├── package.json                         # Dependências e scripts
+├── tsconfig.json                        # TypeScript base
+├── tsconfig.app.json                    # TypeScript da aplicação
+├── tsconfig.spec.json                   # TypeScript dos testes
+├── .postcssrc.json                      # Configuração do PostCSS
+├── .prettierrc                          # Configuração do Prettier
+├── .editorconfig                        # Padrões de editor
 └── README.md
 ```
 
