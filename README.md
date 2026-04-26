@@ -1,59 +1,85 @@
 # Wetrega
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Aplicação web desenvolvida com [Angular](https://angular.dev/) 21, [TailwindCSS](https://tailwindcss.com/) 4 e [Vitest](https://vitest.dev/).
 
-## Development server
+## Pré-requisitos
 
-To start a local development server, run:
+- Node.js compatível com Angular 21
+- npm 11+
+
+## Instalação
 
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Scripts disponíveis
 
-## Code scaffolding
+| Comando | Descrição |
+| --- | --- |
+| `npm start` | Inicia o servidor de desenvolvimento em `http://localhost:4200/` |
+| `npm run build` | Gera o build de produção em `dist/` |
+| `npm run watch` | Build em modo desenvolvimento com observação de arquivos |
+| `npm test` | Executa os testes unitários com Vitest |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+A aplicação recarrega automaticamente sempre que algum arquivo-fonte é modificado.
 
-```bash
-ng generate component component-name
+## Estrutura do projeto
+
+```
+wetrega/
+├── public/
+│   └── favicon.ico
+├── src/
+│   ├── app/
+│   │   ├── app.config.ts        # Configuração da aplicação (providers)
+│   │   ├── app.routes.ts        # Definição de rotas
+│   │   ├── app.ts               # Componente raiz
+│   │   ├── app.html             # Template do componente raiz
+│   │   ├── app.css              # Estilos do componente raiz
+│   │   └── app.spec.ts          # Testes do componente raiz
+│   ├── index.html               # HTML principal
+│   ├── main.ts                  # Bootstrap da aplicação
+│   └── styles.css               # Estilos globais (Tailwind)
+├── angular.json                 # Configuração do Angular CLI
+├── package.json                 # Dependências e scripts
+├── tsconfig.json                # Configuração TypeScript base
+├── tsconfig.app.json            # Configuração TypeScript da aplicação
+├── tsconfig.spec.json           # Configuração TypeScript dos testes
+├── .postcssrc.json              # Configuração do PostCSS
+├── .prettierrc                  # Configuração do Prettier
+├── .editorconfig                # Padrões de editor
+└── README.md
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Geração de código
+
+O Angular CLI permite gerar novos artefatos (componentes, diretivas, pipes etc.):
 
 ```bash
+ng generate component nome-do-componente
 ng generate --help
 ```
 
-## Building
+## Testes
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Unitários
 
 ```bash
-ng test
+npm test
 ```
 
-## Running end-to-end tests
+### End-to-end
 
-For end-to-end (e2e) testing, run:
+O Angular CLI não inclui um framework de testes e2e por padrão. Configure o de sua preferência e execute com:
 
 ```bash
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Recursos adicionais
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Documentação do Angular](https://angular.dev/)
+- [Angular CLI – Referência de comandos](https://angular.dev/tools/cli)
+- [TailwindCSS](https://tailwindcss.com/docs)
+- [Vitest](https://vitest.dev/)
