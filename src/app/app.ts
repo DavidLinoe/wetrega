@@ -1,12 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from "./layout/navigation/containers/navigation.container.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavigationComponent],
+  imports: [NavigationComponent],
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('wetrega');
+  protected readonly title = signal('WeTrega');
 }
