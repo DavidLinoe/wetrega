@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { NavigationComponent } from "./layout/navigation/containers/navigation.container.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [NavigationComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
 })
 export class App {

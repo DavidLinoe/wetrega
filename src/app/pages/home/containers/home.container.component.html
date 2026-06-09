@@ -1,1 +1,3 @@
-home works !
+@if (data$ | async; as home) {
+  <app-home-view [data]="home" />
+}
