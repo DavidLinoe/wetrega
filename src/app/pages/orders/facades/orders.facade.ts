@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { OrdersApi } from '../apis/orders.api';
 import { mapOrdersDtoToData } from '../mappers/orders.mapper';
-import { CreateOrderPayload, OrderStatus, OrdersData } from '../models/orders.model';
+import { CreateOrderPayload, ORDER_STATUS_INT, OrderStatus, OrdersData } from '../models/orders.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrdersFacade {
@@ -29,7 +29,7 @@ export class OrdersFacade {
   }
 
   async updateOrderStatus(orderId: string, status: OrderStatus): Promise<boolean> {
-    const result = await this.api.updateOrderStatus(orderId, status);
+    const result = await this.api.updateOrderStatus(orderId, ORDER_STATUS_INT[status]);
     if (result) {
       await this.load();
       return true;

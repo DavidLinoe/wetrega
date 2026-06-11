@@ -47,8 +47,8 @@ export class OrdersApi {
     return this.http.post<OrderDto>('/Order', dto);
   }
 
-  updateOrderStatus(id: string, status: string): Promise<OrderDto | null> {
-    return this.http.patch<OrderDto>(`/Order/${id}/status`, { status });
+  updateOrderStatus(id: string, statusInt: number): Promise<OrderDto | null> {
+    return this.http.patch<OrderDto>(`/Order/${id}/status`, { status: statusInt });
   }
 
   getMenuItems(): Promise<MenuItemDto[] | null> {

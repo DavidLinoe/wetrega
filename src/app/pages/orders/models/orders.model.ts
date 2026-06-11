@@ -16,6 +16,15 @@ export const ORDER_STATUS_CLASS: Record<OrderStatus, string> = {
   Canceled: 'bg-rose-100 text-rose-700',
 };
 
+// Maps string status (returned by backend GET) to its enum integer value (required by backend PATCH)
+export const ORDER_STATUS_INT: Record<OrderStatus, number> = {
+  Pending: 1,
+  Preparing: 2,
+  OutForDelivery: 3,
+  Delivered: 4,
+  Canceled: 5,
+};
+
 export const ORDER_STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
   { value: 'Pending', label: 'Pendente' },
   { value: 'Preparing', label: 'Preparando' },
