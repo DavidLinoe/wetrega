@@ -1,3 +1,7 @@
 @if (data$ | async; as view) {
-  <app-orders-view [data]="view" />
+  <app-orders-view
+    [data]="view"
+    (createOrder)="onCreate($event)"
+    (updateStatus)="onUpdateStatus($event)"
+  />
 }

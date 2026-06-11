@@ -1,14 +1,12 @@
-export interface Restaurant {
+export interface MenuItem {
   id: string;
+  restaurantId: string;
+  restaurantName: string;
   name: string;
-  category: string;
-  rating: number;
-  deliveryTime: string;
-  deliveryFee: string;
-  image: string;
+  description: string;
+  price: string;
 }
 
 export interface ExploreData {
-  filters: string[];
-  restaurants: Restaurant[];
+  items: MenuItem[];
 }

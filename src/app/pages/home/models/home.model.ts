@@ -1,20 +1,11 @@
-export interface Category {
+export interface RestaurantItem {
   id: string;
   name: string;
-  icon: string;
-  placesCount: number;
-}
-
-export interface Offer {
-  id: string;
-  tag: string;
-  title: string;
   description: string;
-  code: string;
+  phone: string;
+  isOpen: boolean;
 }
 
 export interface HomeData {
-  userName: string;
-  offer: Offer;
-  categories: Category[];
+  restaurants: RestaurantItem[];
 }

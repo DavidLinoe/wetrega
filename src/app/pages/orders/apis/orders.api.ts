@@ -1,31 +1,57 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
-import { OrderStatus } from '../models/orders.model';
 
 export interface OrderItemDto {
-  name: string;
+  id: string;
+  menuItemId: string;
   quantity: number;
+  unitPrice: number;
+  subtotal: number;
 }
 
 export interface OrderDto {
   id: string;
-  restaurant_name: string;
-  status: OrderStatus;
+  customerName: string;
+  totalAmount: number;
+  status: string;
+  createdAt: string;
   items: OrderItemDto[];
-  total: number;
-  created_at: string;
 }
 
-export interface OrdersDto {
-  active: OrderDto[];
-  past: OrderDto[];
+export interface MenuItemDto {
+  id: string;
+  restaurantId: string;
+  name: string;
+  price: number;
+}
+
+export interface CreateOrderItemDto {
+  menuItemId: string;
+  quantity: number;
+}
+
+export interface CreateOrderDto {
+  customerName: string;
+  items: CreateOrderItemDto[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class OrdersApi {
   private readonly http = inject(HttpService);
 
-  getOrders(): Promise<OrdersDto | null> {
-    return this.http.get<OrdersDto>('/orders');
+  getOrders(): Promise<OrderDto[] | null> {
+    return this.http.get<OrderDto[]>('/Order');
+  }
+
+  createOrder(dto: CreateOrderDto): Promise<OrderDto | null> {
+    return this.http.post<OrderDto>('/Order', dto);
+  }
+
+  updateOrderStatus(id: string, status: string): Promise<OrderDto | null> {
+    return this.http.patch<OrderDto>(`/Order/${id}/status`, { status });
+  }
+
+  getMenuItems(): Promise<MenuItemDto[] | null> {
+    return this.http.get<MenuItemDto[]>('/MenuItem');
   }
 }

@@ -1,33 +1,180 @@
-@let user = data();
+@let view = data();
 
 <div class="flex flex-col gap-6 pb-6">
   <header
     class="rounded-b-[2.5rem] bg-gradient-to-br from-orange-500 to-orange-600 px-5 pb-8 pt-6 text-white"
   >
-    <h1 class="text-2xl font-bold">Perfil</h1>
-    <div class="mt-4 flex items-center gap-3">
-      <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl">
-        {{ user.avatar }}
-      </div>
-      <div>
-        <p class="text-lg font-bold">{{ user.name }}</p>
-        <p class="text-sm text-white/80">{{ user.email }}</p>
-      </div>
-    </div>
+    <h1 class="text-2xl font-bold">Administração</h1>
+    <p class="mt-1 text-sm text-white/90">Gerencie restaurantes e cardápio</p>
   </header>
 
-  <section class="flex flex-col gap-2 px-5">
-    @for (item of user.menu; track item.label) {
+  <section class="px-5">
+    <div class="flex rounded-2xl bg-gray-100 p-1">
       <button
         type="button"
-        class="flex items-center justify-between rounded-2xl bg-white p-4 shadow-sm"
+        (click)="setTab('list')"
+        class="flex-1 rounded-xl py-2 text-sm font-semibold transition-colors"
+        [class]="activeTab() === 'list' ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-500'"
       >
-        <span class="flex items-center gap-3 text-sm font-medium text-slate-700">
-          <span class="text-xl">{{ item.icon }}</span>
-          {{ item.label }}
-        </span>
-        <span class="text-gray-300" aria-hidden="true">→</span>
+        Restaurantes
       </button>
-    }
+      <button
+        type="button"
+        (click)="setTab('restaurant')"
+        class="flex-1 rounded-xl py-2 text-sm font-semibold transition-colors"
+        [class]="activeTab() === 'restaurant' ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-500'"
+      >
+        + Restaurante
+      </button>
+      <button
+        type="button"
+        (click)="setTab('menuitem')"
+        class="flex-1 rounded-xl py-2 text-sm font-semibold transition-colors"
+        [class]="activeTab() === 'menuitem' ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-500'"
+      >
+        + Item
+      </button>
+    </div>
   </section>
+
+  @if (activeTab() === 'list') {
+    <section class="px-5 flex flex-col gap-3">
+      @if (view.restaurants.length === 0) {
+        <p class="text-center text-sm text-gray-400 py-10">Nenhum restaurante cadastrado.</p>
+      }
+      @for (r of view.restaurants; track r.id) {
+        <article class="rounded-2xl bg-white p-4 shadow-sm flex items-center justify-between gap-3">
+          <div>
+            <p class="font-semibold text-slate-800">{{ r.name }}</p>
+            <p class="text-xs text-gray-400">{{ r.id.slice(0, 8) }}...</p>
+          </div>
+          <button
+            type="button"
+            (click)="toggleStatus(r.id, r.isOpen)"
+            class="shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold"
+            [class]="r.isOpen ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'"
+          >
+            {{ r.isOpen ? 'Aberto' : 'Fechado' }}
+          </button>
+        </article>
+      }
+    </section>
+  }
+
+  @if (activeTab() === 'restaurant') {
+    <section class="mx-5 rounded-2xl bg-white p-4 shadow-sm">
+      <h2 class="mb-3 font-semibold text-slate-800">Cadastrar Restaurante</h2>
+      <div class="flex flex-col gap-3">
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Nome *</label>
+          <input
+            type="text"
+            [ngModel]="restName()"
+            (ngModelChange)="restName.set($event)"
+            placeholder="Nome do restaurante"
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Descrição</label>
+          <input
+            type="text"
+            [ngModel]="restDescription()"
+            (ngModelChange)="restDescription.set($event)"
+            placeholder="Breve descrição"
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Telefone</label>
+          <input
+            type="tel"
+            [ngModel]="restPhone()"
+            (ngModelChange)="restPhone.set($event)"
+            placeholder="(00) 00000-0000"
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Endereço</label>
+          <input
+            type="text"
+            [ngModel]="restAddress()"
+            (ngModelChange)="restAddress.set($event)"
+            placeholder="Rua, número, bairro"
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          />
+        </div>
+        <button
+          type="button"
+          (click)="submitRestaurant()"
+          [disabled]="submitting() || !restName().trim()"
+          class="rounded-xl bg-orange-500 py-3 text-sm font-semibold text-white disabled:opacity-50"
+        >
+          {{ submitting() ? 'Salvando...' : 'Cadastrar Restaurante' }}
+        </button>
+      </div>
+    </section>
+  }
+
+  @if (activeTab() === 'menuitem') {
+    <section class="mx-5 rounded-2xl bg-white p-4 shadow-sm">
+      <h2 class="mb-3 font-semibold text-slate-800">Adicionar Item ao Menu</h2>
+      <div class="flex flex-col gap-3">
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Restaurante *</label>
+          <select
+            [ngModel]="itemRestaurantId()"
+            (ngModelChange)="itemRestaurantId.set($event)"
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          >
+            <option value="">Selecione o restaurante</option>
+            @for (r of view.restaurants; track r.id) {
+              <option [value]="r.id">{{ r.name }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Nome do Item *</label>
+          <input
+            type="text"
+            [ngModel]="itemName()"
+            (ngModelChange)="itemName.set($event)"
+            placeholder="Ex: Pizza Margherita"
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Descrição</label>
+          <input
+            type="text"
+            [ngModel]="itemDescription()"
+            (ngModelChange)="itemDescription.set($event)"
+            placeholder="Ingredientes, detalhes..."
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-gray-500">Preço (R$) *</label>
+          <input
+            type="number"
+            [ngModel]="itemPrice()"
+            (ngModelChange)="itemPrice.set($event)"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+            class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-orange-400"
+          />
+        </div>
+        <button
+          type="button"
+          (click)="submitMenuItem()"
+          [disabled]="submitting() || !itemName().trim() || !itemRestaurantId() || !itemPrice()"
+          class="rounded-xl bg-orange-500 py-3 text-sm font-semibold text-white disabled:opacity-50"
+        >
+          {{ submitting() ? 'Salvando...' : 'Adicionar ao Cardápio' }}
+        </button>
+      </div>
+    </section>
+  }
 </div>

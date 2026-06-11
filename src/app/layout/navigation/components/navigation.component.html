@@ -1,7 +1,7 @@
 <nav class="flex shrink-0 items-center justify-around border-t border-black/5 bg-white px-2 py-2">
   @for (item of items$ | async; track item.route) {
     <a
-      [routerLink]="['/', item.route]"
+      [routerLink]="item.route ? ['/', item.route] : ['/']"
       routerLinkActive="text-orange-600"
       [routerLinkActiveOptions]="{ exact: true }"
       class="flex flex-1 flex-col items-center gap-1 py-1 text-xs font-medium text-gray-400"

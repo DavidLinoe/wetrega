@@ -1,22 +1,17 @@
-import { ExploreDto, RestaurantDto } from '../apis/explore.api';
-import { ExploreData, Restaurant } from '../models/explore.model';
+import { MenuItemDto, RestaurantDto } from '../apis/explore.api';
+import { ExploreData, MenuItem } from '../models/explore.model';
 
-export function mapExploreDtoToData(dto: ExploreDto): ExploreData {
-  return {
-    filters: dto.filters,
-    restaurants: dto.restaurants.map(mapRestaurant),
-  };
-}
+export function mapExploreToData(items: MenuItemDto[], restaurants: RestaurantDto[]): ExploreData {
+  const restaurantMap = new Map(restaurants.map((r) => [r.id, r.name]));
 
-function mapRestaurant(dto: RestaurantDto): Restaurant {
   return {
-    id: dto.id,
-    name: dto.name,
-    category: dto.category,
-    rating: dto.rating,
-    deliveryTime: dto.delivery_time,
-    deliveryFee:
-      dto.delivery_fee === 0 ? 'Grátis' : `R$ ${dto.delivery_fee.toFixed(2).replace('.', ',')}`,
-    image: dto.image,
+    items: items.map((item) => ({
+      id: item.id,
+      restaurantId: item.restaurantId,
+      restaurantName: restaurantMap.get(item.restaurantId) ?? 'Restaurante',
+      name: item.name,
+      description: item.description,
+      price: `R$ ${Number(item.price).toFixed(2).replace('.', ',')}`,
+    })),
   };
 }

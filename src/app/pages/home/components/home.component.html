@@ -9,67 +9,38 @@
         <p class="text-sm font-extrabold text-orange-600">We</p>
         <p class="text-sm font-extrabold text-orange-600">Trega</p>
       </div>
-      <button
-        type="button"
-        class="relative rounded-xl bg-white/15 p-2.5 text-lg"
-        aria-label="Notificações"
-      >
-        🔔
-        <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-yellow-300"></span>
-      </button>
     </div>
-
-    <p class="mt-5 text-sm font-medium text-white/90">Olá, {{ home.userName }} 👋</p>
-    <h1 class="mt-1 text-2xl font-bold leading-snug">O que vamos<br />entregar hoje?</h1>
-
-    <div class="mt-5 flex items-center gap-2 rounded-2xl bg-white p-2 shadow-lg">
-      <span class="pl-2 text-gray-400">🔍</span>
-      <input
-        type="text"
-        placeholder="Buscar restaurantes, pratos..."
-        class="flex-1 bg-transparent text-sm text-gray-700 outline-none placeholder:text-gray-400"
-      />
-      <button type="button" class="rounded-xl bg-orange-500 p-2.5 text-white" aria-label="Filtros">
-        ☰
-      </button>
-    </div>
+    <h1 class="mt-5 text-2xl font-bold leading-snug">Restaurantes</h1>
+    <p class="mt-1 text-sm text-white/90">Escolha onde quer pedir</p>
   </header>
 
-  <section class="px-5">
-    <div
-      class="overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-5 text-white"
-    >
-      <span
-        class="inline-block rounded-md bg-orange-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide"
-      >
-        {{ home.offer.tag }}
-      </span>
-      <h2 class="mt-3 text-xl font-bold leading-snug">{{ home.offer.title }}</h2>
-      <p class="mt-1 text-sm text-white/60">{{ home.offer.description }}</p>
-      <button
-        type="button"
-        class="mt-4 flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2.5 text-sm font-semibold"
-      >
-        Usar código: {{ home.offer.code }}
-        <span aria-hidden="true">→</span>
-      </button>
-    </div>
-  </section>
+  <section class="flex flex-col gap-3 px-5">
+    @if (home.restaurants.length === 0) {
+      <p class="text-center text-sm text-gray-400 py-10">Nenhum restaurante disponível.</p>
+    }
 
-  <section class="px-5">
-    <div class="flex items-center justify-between">
-      <h2 class="text-lg font-bold text-slate-800">Categorias</h2>
-      <button type="button" class="text-sm font-semibold text-orange-600">Ver todas</button>
-    </div>
-
-    <div class="mt-4 grid grid-cols-3 gap-3">
-      @for (category of home.categories; track category.id) {
-        <button type="button" class="flex flex-col items-center rounded-2xl bg-white p-4 shadow-sm">
-          <span class="text-3xl">{{ category.icon }}</span>
-          <span class="mt-2 text-sm font-semibold text-slate-800">{{ category.name }}</span>
-          <span class="text-xs text-gray-400">{{ category.placesCount }} locais</span>
-        </button>
-      }
-    </div>
+    @for (restaurant of home.restaurants; track restaurant.id) {
+      <article class="rounded-2xl bg-white p-4 shadow-sm">
+        <div class="flex items-start justify-between gap-2">
+          <h2 class="font-semibold text-slate-800">{{ restaurant.name }}</h2>
+          <span
+            class="shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold"
+            [class]="
+              restaurant.isOpen
+                ? 'bg-emerald-100 text-emerald-700'
+                : 'bg-rose-100 text-rose-700'
+            "
+          >
+            {{ restaurant.isOpen ? 'Aberto' : 'Fechado' }}
+          </span>
+        </div>
+        @if (restaurant.description) {
+          <p class="mt-1 text-sm text-gray-500">{{ restaurant.description }}</p>
+        }
+        @if (restaurant.phone) {
+          <p class="mt-2 text-xs text-gray-400">📞 {{ restaurant.phone }}</p>
+        }
+      </article>
+    }
   </section>
 </div>
